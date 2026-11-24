@@ -1,13 +1,10 @@
-// Night river backdrop: baked design image (assets/bg-river.webp) + live moon path, ripples, motes.
+// Night river backdrop: the design image is a CSS background of #scene (painted once); this canvas only draws moon path, ripples, motes.
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 // measured on the 2560x1440 design; ax = which part of the image stays visible when cropped (keeps the moon in view on phones)
 const BG = { ar: 16 / 9, moonX: 0.777, moonY: 0.188, moonR: 0.109, horizon: 0.548, ax: 0.8 };
 
 export function createScene(canvas) {
   const ctx = canvas.getContext('2d');
-  const img = new Image();
-  img.onload = () => draw(performance.now());
-  img.src = 'assets/bg-river.webp';
   let W = 0, H = 0, dpr = 1, ox = 0, oy = 0, iw = 0, ih = 0, hy = 0;
   const rnd = (a, b) => a + Math.random() * (b - a);
   const motes = Array.from({ length: 60 }, () => ({ x: Math.random(), y: Math.random(), s: rnd(0.4, 1.4), v: rnd(0.012, 0.035), p: rnd(0, 6.28) }));
@@ -29,19 +26,14 @@ export function createScene(canvas) {
     iw = Math.max(W, H * BG.ar); ih = iw / BG.ar; // cover
     ox = (W - iw) * BG.ax; oy = (H - ih) / 2;
     hy = oy + BG.horizon * ih;
+    canvas.style.setProperty('--hy', hy + 'px'); // phone sky dimming in CSS
     draw(performance.now());
   }
 
   function draw(ms) {
     const t = ms / 1000;
     const mx = ox + BG.moonX * iw, mr = BG.moonR * ih;
-    ctx.globalAlpha = 1;
-    if (img.naturalWidth) ctx.drawImage(img, ox, oy, iw, ih);
-    if (H > W) { // phones: the cropped moon sits behind the hero text, so dim the sky above the water
-      const d = ctx.createLinearGradient(0, 0, 0, hy);
-      d.addColorStop(0, 'rgba(4,5,13,.6)'); d.addColorStop(1, 'rgba(4,5,13,.35)');
-      ctx.fillStyle = d; ctx.fillRect(0, 0, W, hy);
-    }
+    ctx.clearRect(0, 0, W, H);
     // moon path
     const rows = 38, span = (H - hy) * 1.1;
     ctx.fillStyle = 'rgb(255,208,120)';
@@ -70,7 +62,8 @@ export function createScene(canvas) {
   }
 
   let raf = 0;
-  const loop = (ms) => { draw(ms); raf = requestAnimationFrame(loop); };
+  let lastDraw = 0;
+  const loop = (ms) => { if (ms - lastDraw >= 32) { lastDraw = ms; draw(ms); } raf = requestAnimationFrame(loop); }; // ~30fps is plenty for a slow shimmer
   function start() { if (!reduce && !raf) raf = requestAnimationFrame(loop); }
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) { cancelAnimationFrame(raf); raf = 0; } else start();
