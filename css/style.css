@@ -16,7 +16,8 @@ h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.4;letter-spacing
 [hidden]{display:none!important}
 
 /* ---------- backdrop ---------- */
-#scene{position:fixed;inset:0;width:100%;height:100%;z-index:-3}
+#scene{position:fixed;inset:0;width:100%;height:100%;z-index:-3;background:url(../assets/bg-river.webp) 80% 50%/cover no-repeat,#07050b}
+@media (orientation:portrait){#scene{background:linear-gradient(rgba(4,5,13,.6),rgba(4,5,13,.35)) 0 0/100% var(--hy,55%) no-repeat,url(../assets/bg-river.webp) 80% 50%/cover no-repeat,#07050b}} /* phones: cropped moon sits behind the hero text */
 .shade{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:0;transition:opacity .5s var(--ease);
   background:radial-gradient(120% 90% at 50% 40%,rgba(7,5,11,.35),rgba(7,5,11,.88))}
 body[data-view=select] .shade,body[data-view=wish] .shade{opacity:1}
@@ -92,7 +93,7 @@ body[data-view=river] .shade{opacity:.35}
 .hk-b{animation:none!important;width:min(17vw,230px);left:36%;bottom:2%;animation-delay:-3.2s;animation-duration:7.5s;opacity:.95}
 .hk-c{width:min(20vw,260px);right:3%;bottom:5%;animation-delay:-2s;animation-duration:8s;opacity:.85}
 @keyframes bob{0%,100%{transform:translate(0,0) rotate(-.6deg)}50%{transform:translate(8px,-7px) rotate(.7deg)}}
-.flare{position:absolute;left:12%;right:12%;top:55%;height:18%;border-radius:50%;background:radial-gradient(closest-side,rgba(243,200,110,.4),transparent);filter:blur(14px);z-index:-1;}
+.flare{position:absolute;left:12%;right:12%;top:55%;height:18%;border-radius:50%;background:radial-gradient(closest-side,rgba(243,200,110,.4),transparent);z-index:-1;}
 @keyframes flick{0%,100%{opacity:.65}40%{opacity:1}70%{opacity:.8}}
 
 /* ---------- about ---------- */
@@ -161,7 +162,7 @@ body[data-view=river] .shade{opacity:.35}
 #view-float{min-height:100svh}
 .float-stage{position:relative;height:100svh;overflow:hidden}
 .float-kr{position:absolute;left:50%;bottom:5%;width:min(80vw,620px);margin-left:calc(min(80vw,620px)/-2);opacity:0;will-change:transform,opacity}
-.float-kr .glow{position:absolute;left:6%;right:6%;top:48%;height:30%;border-radius:50%;background:radial-gradient(closest-side,rgba(243,200,110,.7),transparent);filter:blur(18px);z-index:-1}
+.float-kr .glow{position:absolute;left:6%;right:6%;top:48%;height:30%;border-radius:50%;background:radial-gradient(closest-side,rgba(243,200,110,.7),transparent);z-index:-1}
 .sparks{position:absolute;inset:-14% -4% 0;pointer-events:none}
 .sparks i{position:absolute;width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle,#fff4cf,rgba(243,200,110,0) 70%);opacity:0;animation:tw var(--d) ease-in-out var(--dl) infinite}
 @keyframes tw{0%,100%{opacity:0;transform:translateY(6px) scale(.5)}50%{opacity:1;transform:translateY(-10px) scale(1)}}
@@ -186,7 +187,7 @@ body[data-view=river] .shade{opacity:.35}
 .river-empty{position:absolute;z-index:5;left:0;right:0;top:64%;padding:0 20px;text-align:center;color:var(--muted)}
 .rk .kr{transition:filter .3s}
 .rk.mine:hover .kr,.rk.mine:focus-visible .kr{filter:drop-shadow(0 0 14px rgba(255,220,140,.85)) brightness(1.1)}
-.rk::after{content:'';position:absolute;left:8%;right:8%;bottom:-6%;height:22%;border-radius:50%;background:radial-gradient(closest-side,rgba(243,200,110,.45),transparent);filter:blur(6px);z-index:-1}
+.rk::after{content:'';position:absolute;left:8%;right:8%;bottom:-6%;height:22%;border-radius:50%;background:radial-gradient(closest-side,rgba(243,200,110,.45),transparent);z-index:-1}
 .rk .who{position:absolute;left:50%;top:-18px;transform:translateX(-50%) translateY(4px);white-space:nowrap;font-size:.8rem;padding:1px 10px;border-radius:999px;background:rgba(7,5,11,.75);border:1px solid var(--line);opacity:0;transition:opacity .25s,transform .25s;pointer-events:none}
 .rk:hover .who,.rk:focus-visible .who,.rk.mine .who{opacity:1;transform:translateX(-50%)}
 .rk.mine .who{background:var(--gold-soft);color:#3a0c14;border-color:var(--gold-soft);font-weight:600}
