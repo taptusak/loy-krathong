@@ -49,7 +49,9 @@ async function route() {
   veil.classList.remove('on');
   busy = false;
   const w = guard(parse());
-  if ((w === 'about' ? 'home' : w) !== current) route(); // a click landed mid-transition
+  if ((w === 'about' ? 'home' : w) !== current) route();
+// warm the other krathong images after the page is idle so the select page opens instantly
+addEventListener('load', () => setTimeout(() => KRATHONGS.forEach((k) => { new Image().src = krSrc(k.id); }), 1500)); // a click landed mid-transition
 }
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 function setNav(r) {
@@ -71,7 +73,7 @@ burger.addEventListener('click', () => { const o = menu.classList.toggle('open')
 const cardsEl = $('#cards');
 cardsEl.innerHTML = KRATHONGS.map((k) => `
   <button type="button" class="card" role="radio" aria-checked="false" data-id="${k.id}">
-    <div class="kr"><img src="${krSrc(k.id)}" alt="${k.name}" width="1920" height="1080" loading="eager"></div>
+    <div class="kr"><img src="${krSrc(k.id)}" alt="${k.name}" width="1280" height="720" loading="lazy" decoding="async"></div>
     <span class="nm">${k.name}</span>
   </button>`).join('');
 const pv = { img: $('#pv-img'), name: $('#pv-name'), desc: $('#pv-desc'), btn: $('#pv-confirm'), box: $('#pv-kr') };
@@ -176,7 +178,7 @@ async function loadRiver() {
   $('#river-count').textContent = r.total.toLocaleString('th-TH');
   $('#river-empty').hidden = r.items.length > 0;
   stage.innerHTML = '';
-  items = r.items.map((w) => {
+  items = r.items.slice(-(innerWidth < 700 ? 36 : 60)).map((w) => { // fewer moving layers on phones
     const m = mine.get(w.id);
     const b = document.createElement(m ? 'button' : 'div');
     b.className = 'rk' + (m ? ' mine' : '');
